@@ -20,11 +20,11 @@ local FindInvites = function(self, event, msg, sender, ...)
 	if (sender == Player) then
 		return
 	end
-	
+
 	for word in gmatch(msg, "(%w+)") do
 		if Keywords[word] then
 			msg = gsub(lower(msg), word, format("|cFFFFEB3B|Hcommand:/invite %s|h[%s]|h|r", sender, word))
-			
+
 			return false, msg, sender, ...
 		end
 	end
