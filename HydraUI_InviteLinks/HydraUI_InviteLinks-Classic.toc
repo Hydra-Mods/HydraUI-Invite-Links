@@ -1,6 +1,6 @@
 ## Interface: 11401
 ## Author: Hydra
-## Version: 1.08
+## Version: 1.09
 ## Title: |cFFFFC44DHydra|r|cFFFFFFFFUI Invite Links|r
 ## Notes: Create clickable invite links in chat
 ## RequiredDeps: HydraUI
