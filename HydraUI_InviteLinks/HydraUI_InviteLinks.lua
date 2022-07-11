@@ -11,9 +11,9 @@ local format = string.format
 local gmatch = string.gmatch
 
 local Keywords = {
-	["reinvite"] = true,
-	["invite"] = true,
 	["inv"] = true,
+	["invite"] = true,
+	["reinvite"] = true,
 }
 
 local FindInvites = function(self, event, msg, sender, ...)
@@ -22,8 +22,8 @@ local FindInvites = function(self, event, msg, sender, ...)
 	end
 
 	for word in gmatch(msg, "(%w+)") do
-		if Keywords[word] then
-			msg = gsub(lower(msg), word, format("|cFFFFEB3B|Hcommand:/invite %s|h[%s]|h|r", sender, word))
+		if Keywords[lower(word)] then
+			msg = gsub(lower(msg), lower(word), format("|cFFFFEB3B|Hcommand:/invite %s|h[%s]|h|r", sender, word))
 
 			return false, msg, sender, ...
 		end
