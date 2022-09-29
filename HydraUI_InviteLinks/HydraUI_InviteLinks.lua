@@ -10,11 +10,10 @@ local lower = string.lower
 local format = string.format
 local gmatch = string.gmatch
 
-local Keywords = {
-	["inv"] = true,
-	["invite"] = true,
-	["reinvite"] = true,
-}
+local Keywords = {}
+
+Keywords[gsub(_G["SLASH_INVITE2"], "/", "")] = true -- inv
+Keywords[gsub(_G["SLASH_INVITE3"], "/", "")] = true -- invite
 
 local FindInvites = function(self, event, msg, sender, ...)
 	if (sender == Player) then
