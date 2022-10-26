@@ -1,19 +1,44 @@
-if (not HydraUIGlobal) then
-	return
-end
-
-local HydraUI = HydraUIGlobal:get()
-local Player = UnitName("player") .. "-" .. GetRealmName()
-
+local sub = string.sub
 local gsub = string.gsub
 local lower = string.lower
 local format = string.format
 local gmatch = string.gmatch
 
+local Player = UnitName("player") .. "-" .. GetRealmName()
+local SetHyperlink = ItemRefTooltip.SetHyperlink
+
 local Keywords = {}
 
-Keywords[gsub(_G["SLASH_INVITE2"], "/", "")] = true -- inv
-Keywords[gsub(_G["SLASH_INVITE3"], "/", "")] = true -- invite
+Keywords["inv"] = true
+Keywords["reinv"] = true
+Keywords["invite"] = true
+Keywords["reinvite"] = true
+Keywords[gsub(_G.SLASH_INVITE2, "/", "")] = true -- /inv
+Keywords[gsub(_G.SLASH_INVITE3, "/", "")] = true -- /invite
+
+for word in next, Keywords do
+	print(word)
+end
+
+ItemRefTooltip.SetHyperlink = function(self, link, text, button, frame)
+	if (sub(link, 1, 7) == "command") then
+		local EditBox = ChatEdit_ChooseBoxForSend()
+		local Command = sub(link, 9)
+		
+		EditBox:SetText("")
+		
+		if (not EditBox:IsShown()) then
+			ChatEdit_ActivateChat(EditBox)
+		else
+			ChatEdit_UpdateHeader(EditBox)
+		end
+		
+		EditBox:Insert(Command)
+		ChatEdit_ParseText(EditBox, 1)
+	else
+		SetHyperlink(self, link, text, button, frame)
+	end
+end
 
 local FindInvites = function(self, event, msg, sender, ...)
 	if (sender == Player) then
@@ -42,4 +67,6 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", FindInvites)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", FindInvites)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", FindInvites)
 
-HydraUI:NewPlugin("HydraUI_InviteLinks")
+if IsAddOnLoaded("HydraUI_InviteLinks") then -- Temp, disable the addons predecessor
+	DisableAddOn("HydraUI_InviteLinks")
+end
