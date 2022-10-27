@@ -16,10 +16,6 @@ Keywords["reinvite"] = true
 Keywords[gsub(_G.SLASH_INVITE2, "/", "")] = true -- /inv
 Keywords[gsub(_G.SLASH_INVITE3, "/", "")] = true -- /invite
 
-for word in next, Keywords do
-	print(word)
-end
-
 ItemRefTooltip.SetHyperlink = function(self, link, text, button, frame)
 	if (sub(link, 1, 7) == "command") then
 		local EditBox = ChatEdit_ChooseBoxForSend()
