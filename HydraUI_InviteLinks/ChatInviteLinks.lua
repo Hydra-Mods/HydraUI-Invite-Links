@@ -13,23 +13,22 @@ Keywords["inv"] = true
 Keywords["reinv"] = true
 Keywords["invite"] = true
 Keywords["reinvite"] = true
-Keywords[gsub(_G.SLASH_INVITE2, "/", "")] = true -- /inv
-Keywords[gsub(_G.SLASH_INVITE3, "/", "")] = true -- /invite
+Keywords[gsub(SLASH_INVITE2, "/", "")] = true -- /inv
+Keywords[gsub(SLASH_INVITE3, "/", "")] = true -- /invite
 
 ItemRefTooltip.SetHyperlink = function(self, link, text, button, frame)
 	if (sub(link, 1, 7) == "command") then
 		local EditBox = ChatEdit_ChooseBoxForSend()
-		local Command = sub(link, 9)
-		
+
 		EditBox:SetText("")
-		
+
 		if (not EditBox:IsShown()) then
 			ChatEdit_ActivateChat(EditBox)
 		else
 			ChatEdit_UpdateHeader(EditBox)
 		end
-		
-		EditBox:Insert(Command)
+
+		EditBox:Insert(sub(link, 9))
 		ChatEdit_ParseText(EditBox, 1)
 	else
 		SetHyperlink(self, link, text, button, frame)
@@ -43,7 +42,7 @@ local FindInvites = function(self, event, msg, sender, ...)
 
 	for word in gmatch(msg, "(%w+)") do
 		if Keywords[lower(word)] then
-			msg = gsub(lower(msg), lower(word), format("|cFFFFEB3B|Hcommand:/invite %s|h[%s]|h|r", sender, word))
+			msg = gsub(lower(msg), lower(word), format("|cFFFFEB3B|Hcommand:%s %s|h[%s]|h|r", SLASH_INVITE1, sender, word))
 
 			return false, msg, sender, ...
 		end
