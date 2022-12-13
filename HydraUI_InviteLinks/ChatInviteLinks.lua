@@ -3,10 +3,9 @@ local gsub = string.gsub
 local lower = string.lower
 local format = string.format
 local gmatch = string.gmatch
-
 local Player = UnitName("player") .. "-" .. GetRealmName()
 local SetHyperlink = ItemRefTooltip.SetHyperlink
-
+local CmdFormat = "|cFFFFEB3B|Hcommand:%s %s|h[%s]|h|r"
 local Keywords = {}
 
 Keywords["inv"] = true
@@ -18,18 +17,18 @@ Keywords[gsub(SLASH_INVITE3, "/", "")] = true -- /invite
 
 ItemRefTooltip.SetHyperlink = function(self, link, text, button, frame)
 	if (sub(link, 1, 7) == "command") then
-		local EditBox = ChatEdit_ChooseBoxForSend()
+		local Box = ChatEdit_ChooseBoxForSend()
 
-		EditBox:SetText("")
+		Box:SetText("")
 
-		if (not EditBox:IsShown()) then
-			ChatEdit_ActivateChat(EditBox)
+		if (not Box:IsShown()) then
+			ChatEdit_ActivateChat(Box)
 		else
-			ChatEdit_UpdateHeader(EditBox)
+			ChatEdit_UpdateHeader(Box)
 		end
 
-		EditBox:Insert(sub(link, 9))
-		ChatEdit_ParseText(EditBox, 1)
+		Box:Insert(sub(link, 9))
+		ChatEdit_ParseText(Box, 1)
 	else
 		SetHyperlink(self, link, text, button, frame)
 	end
@@ -42,7 +41,7 @@ local FindInvites = function(self, event, msg, sender, ...)
 
 	for word in gmatch(msg, "(%w+)") do
 		if Keywords[lower(word)] then
-			msg = gsub(lower(msg), lower(word), format("|cFFFFEB3B|Hcommand:%s %s|h[%s]|h|r", SLASH_INVITE1, sender, word))
+			msg = gsub(lower(msg), lower(word), format(CmdFormat, SLASH_INVITE1, sender, word))
 
 			return false, msg, sender, ...
 		end
@@ -61,7 +60,3 @@ ChatFrame_AddMessageEventFilter("CHAT_MSG_RAID_LEADER", FindInvites)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_WHISPER", FindInvites)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_WHISPER", FindInvites)
 ChatFrame_AddMessageEventFilter("CHAT_MSG_BN_CONVERSATION", FindInvites)
-
-if IsAddOnLoaded("HydraUI_InviteLinks") then -- Temp, disable the addons predecessor
-	DisableAddOn("HydraUI_InviteLinks")
-end
