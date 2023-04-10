@@ -3,15 +3,15 @@ local gsub = string.gsub
 local lower = string.lower
 local format = string.format
 local gmatch = string.gmatch
-local Player = UnitName("player") .. "-" .. GetRealmName()
+local Player = format("%s-%s", UnitName("player"), GetRealmName())
 local SetHyperlink = ItemRefTooltip.SetHyperlink
 local CmdFormat = "|cFFFFEB3B|Hcommand:%s %s|h[%s]|h|r"
 local Keywords = {}
 
-Keywords["inv"] = true
-Keywords["reinv"] = true
-Keywords["invite"] = true
-Keywords["reinvite"] = true
+Keywords.inv = true
+Keywords.reinv = true
+Keywords.invite = true
+Keywords.reinvite = true
 Keywords[gsub(SLASH_INVITE2, "/", "")] = true -- /inv
 Keywords[gsub(SLASH_INVITE3, "/", "")] = true -- /invite
 
