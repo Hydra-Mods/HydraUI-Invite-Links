@@ -39,9 +39,11 @@ local FindInvites = function(self, event, msg, sender, ...)
 		return
 	end
 
+	local IsGuildInv = IsInGuild() and IsModifierKeyDown()
+
 	for word in gmatch(msg, "(%w+)") do
 		if Keywords[lower(word)] then
-			if (IsInGuild() and IsModifierKeyDown()) then
+			if IsGuildInv then
 				msg = gsub(lower(msg), lower(word), format(CmdFormat, SLASH_GUILD_INVITE1, sender, word))
 			else
 				msg = gsub(lower(msg), lower(word), format(CmdFormat, SLASH_INVITE1, sender, word))

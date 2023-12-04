@@ -1,6 +1,6 @@
-## Interface: 30402
+## Interface: 30403
 ## Author: Hydra
-## Version: 1.36
+## Version: 1.40
 ## Title: Chat Invite Links
 ## Notes: Create clickable invite links in chat
 
